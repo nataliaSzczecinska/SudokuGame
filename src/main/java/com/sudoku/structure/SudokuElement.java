@@ -68,6 +68,17 @@ public class SudokuElement extends Prototype {
         }
     }
 
+    public boolean isNumberExist(int number) {
+        if (ofNullable(possibleNumbers).isPresent()) {
+            for (int i = 0 ; i < possibleNumbers.size() ; i++) {
+                if (number == possibleNumbers.get(i)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public void setNumber(int number) {
         this.number = number;
         this.possibleNumbers = null;
@@ -75,5 +86,19 @@ public class SudokuElement extends Prototype {
 
     public void setPossibleNumbers(List<Integer> possibleNumbers) {
         this.possibleNumbers = possibleNumbers;
+    }
+
+    @Override
+    public String toString() {
+        String text = "";
+        if (0 == number) {
+            text += "There is no stable number, possible numbers: ";
+            for (Integer element : possibleNumbers) {
+                text += (element + ", ");
+            }
+        } else {
+            text += ("The number is " + number);
+        }
+        return text;
     }
 }

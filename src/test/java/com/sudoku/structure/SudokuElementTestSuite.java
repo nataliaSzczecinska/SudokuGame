@@ -8,7 +8,6 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayName("Sudoku Element Tests")
 public class SudokuElementTestSuite {
     private final Logger logger = Logger.getLogger(getClass().getName());
     private SudokuElement element = new SudokuElement();;
