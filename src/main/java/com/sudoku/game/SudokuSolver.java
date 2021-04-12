@@ -1,11 +1,9 @@
 package com.sudoku.game;
 
-import com.sudoku.io.TextFactor;
 import com.sudoku.structure.Coordinates;
 import com.sudoku.structure.SudokuBoard;
 
 import java.util.logging.Logger;
-import java.util.*;
 
 import static com.sudoku.structure.SudokuBoard.MAX_VALUE;
 
@@ -75,5 +73,16 @@ public class SudokuSolver {
         }
         //logger.info(TextFactor.cannotPutNumberIntoBoard(coordinates));
         return false;
+    }
+
+    public boolean isSolved(SudokuBoard board) {
+        for (int i = 0 ; i < MAX_VALUE ; i++) {
+            for (int j = 0 ; j < MAX_VALUE ; j++) {
+                if (0 == board.getBoardElement(j + 1, i + 1).getNumber()) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }

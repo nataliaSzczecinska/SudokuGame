@@ -1,5 +1,6 @@
 package com.sudoku.structure.controller;
 
+import com.sudoku.game.SudokuGame;
 import com.sudoku.game.SudokuSolver;
 import com.sudoku.io.TextFactor;
 import com.sudoku.structure.Coordinates;
@@ -60,6 +61,12 @@ public class SudokuBoardController {
             }
         }
         return list;
+    }
+
+    public void putManyIntoBoard (SudokuBoard board, List<Coordinates> coordinatesList) {
+        for (Coordinates element : coordinatesList) {
+            putIntoBoard(board, element);
+        }
     }
 
     public void putIntoBoard(SudokuBoard board, Coordinates coordinates) {
@@ -211,5 +218,20 @@ public class SudokuBoardController {
             }
         }
         return true;
+    }
+
+    public boolean isSudokuBoardEmptyOrAlmostEmpty(SudokuBoard board, int minValue) {
+        int count = 0;
+        for (int i = 0 ; i < MAX_VALUE ; i++) {
+            for (int j = 0 ; j < MAX_VALUE ; j++) {
+                if (0 != board.getBoardElement(j + 1, i + 1).getNumber()){
+                    count++;
+                }
+            }
+        }
+        if (count >= minValue) {
+            return true;
+        }
+        return false;
     }
 }

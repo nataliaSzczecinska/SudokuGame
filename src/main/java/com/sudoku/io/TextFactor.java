@@ -1,6 +1,7 @@
 package com.sudoku.io;
 
 import com.sudoku.structure.Coordinates;
+import com.sudoku.structure.SudokuBoard;
 
 public class TextFactor {
     public static String cloneException() {
@@ -40,6 +41,25 @@ public class TextFactor {
     }
 
     public static String cannotPutNumberIntoBoard(Coordinates coordinates) {
-        return "Coordinates " + coordinates + " cannot be put in to the board element";
+        return "Coordinates " + coordinates + " cannot be put in to the board element because on of the reason:" +
+                "\n* in the element there is other number " +
+                "\n* in row/column or box there is the same value";
+    }
+
+    public static String problemWithMethod(String text) {
+        return "There is a problem with method " + text + ", please try again";
+    }
+
+    public static String notEnoughBoardElements() {
+        return "Sorry, the possible solution of the sudoku is to huge to resolve it\n" +
+                " Please, put more numbers into board ";
+    }
+
+    public static String gameIsSolve(SudokuBoard board) {
+        return "THE SOLVE SUDOKU BOARD\n" + board;
+    }
+
+    public static String cannotBeSolve() {
+        return "Sorry, the sudoku board cannot be solve";
     }
 }
