@@ -1,6 +1,5 @@
 package com.sudoku.structure.controller;
 
-import com.sudoku.game.SudokuGame;
 import com.sudoku.game.SudokuSolver;
 import com.sudoku.io.TextFactor;
 import com.sudoku.structure.Coordinates;
@@ -21,7 +20,7 @@ public class SudokuBoardController {
         Coordinates coordinates = null;
 
         if (!((text.length() % 6 == 0) || ((text.length() + 1) % 6 == 0))) {
-            return null;
+            return list;
         }
         for (int i = 0 ; i < text.length() ; i++) {
 
@@ -114,10 +113,6 @@ public class SudokuBoardController {
                         if (!solver.isPossibleToPut(board, coordinates)) {
                             board.getBoardElement(j + 1, i + 1).removeNumberFromPossibleNumbers(value);
                             n--;
-                            /*logger.info("Element (" + coordinates.getColumn()
-                                    + ", " + coordinates.getRow() + ") has now "
-                                    + board.getBoardElement(coordinates.getColumn(), coordinates.getRow())
-                                    .getPossibleNumbers().size() + " possible numbers..");*/
                         }
                     }
                 }
@@ -128,7 +123,6 @@ public class SudokuBoardController {
     public boolean putOnlyPossibleElement(SudokuBoard board) {
         boolean anyChanges, anyChangesInBoard = false;
         do {
-            //logger.info("The putOnlyPossibleElement is running...");
             anyChanges = false;
             putOnlyPossibleNumber(board);
             for (int i = 0 ; i < MAX_VALUE && !anyChanges; i++) {
@@ -138,11 +132,13 @@ public class SudokuBoardController {
                                 .getPossibleNumbers().size() ; n++) {
                             int value = board.getBoardElement(j + 1, i + 1)
                                     .getPossibleNumbers().get(n);
-                            if (checkNumberInPossibilitiesInRow(board, i + 1, value)) {
+                            if (checkNumberInPossibilitiesInRow(board, i + 1, value)
+                            || checkNumberInPossibilitiesInColumn(board, j + 1, value)
+                            || checkNumberInPossibilitiesInBox(board, j + 1, i + 1, value)) {
                                 putIntoBoard(board, temp);
                                 anyChanges = true;
                                 anyChangesInBoard = true;
-                            } else if (checkNumberInPossibilitiesInColumn(board, j + 1, value)) {
+                            } /*else if (checkNumberInPossibilitiesInColumn(board, j + 1, value)) {
                                 putIntoBoard(board, temp);
                                 anyChanges = true;
                                 anyChangesInBoard = true;
@@ -150,7 +146,7 @@ public class SudokuBoardController {
                                 putIntoBoard(board, temp);
                                 anyChanges = true;
                                 anyChangesInBoard = true;
-                            }
+                            }*/
                         }
                     }
                 }

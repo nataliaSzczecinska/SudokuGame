@@ -30,7 +30,7 @@ public class SudokuBoardControllerTestSuite {
         //Then
         assertNotNull(list1);
         assertNotNull(list2);
-        assertNull(list3);
+        assertTrue(list3.isEmpty());
     }
 
     @Test
@@ -87,7 +87,8 @@ public class SudokuBoardControllerTestSuite {
         //When
         boardController.putOnlyPossibleNumber(board);
         logger.info("ACTUAL BOARD\n" + board);
-        logger.info("Element (5, 3) " + board.getBoardElement(5, 3));
+        assertEquals(4, board.getBoardElement(2, 2).getNumber());
+        assertEquals(9, board.getBoardElement(2, 3).getNumber());
     }
 
     @Test
@@ -114,5 +115,8 @@ public class SudokuBoardControllerTestSuite {
         //When
         boardController.putOnlyPossibleElement(board);
         logger.info("ACTUAL BOARD\n" + board);
+        assertEquals(4, board.getBoardElement(2, 2).getNumber());
+        assertEquals(9, board.getBoardElement(2, 3).getNumber());
+        assertEquals(1, board.getBoardElement(5, 3).getNumber());
     }
 }
