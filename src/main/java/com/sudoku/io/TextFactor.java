@@ -4,6 +4,9 @@ import com.sudoku.structure.Coordinates;
 import com.sudoku.structure.SudokuBoard;
 
 public class TextFactor {
+    private TextFactor() {
+    }
+
     public static String cloneException() {
         return "The clone is failed";
     }

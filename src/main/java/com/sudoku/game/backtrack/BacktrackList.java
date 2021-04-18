@@ -1,24 +1,28 @@
 package com.sudoku.game.backtrack;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.*;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class BacktrackList {
-    private List<Backtrack> backtrackList = new ArrayList<>();
+    private List<Backtrack> backtracks= new ArrayList<>();
 
     public void addElement(Backtrack backtrack) {
-        backtrackList.add(backtrack);
+        backtracks.add(backtrack);
     }
 
     public void removeLastElement() {
-        backtrackList.remove(backtrackList.size() - 1);
+        backtracks.remove(backtracks.size() - 1);
     }
 
     public Backtrack getLastElement() {
-        return backtrackList.get(backtrackList.size() - 1);
+        return backtracks.get(backtracks.size() - 1);
     }
 }

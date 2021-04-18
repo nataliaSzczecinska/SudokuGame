@@ -9,9 +9,7 @@ public class Input {
 
     public String readInput(){
         System.out.println(TextFactor.playerOption());
-        String text =  scanner.nextLine();
-
-        return text;
+        return scanner.nextLine();
     }
 
     public boolean checkCorrectLoadData(String text, boolean isSolve) {

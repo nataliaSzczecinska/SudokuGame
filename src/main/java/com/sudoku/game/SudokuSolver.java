@@ -2,7 +2,6 @@ package com.sudoku.game;
 
 import com.sudoku.structure.Coordinates;
 import com.sudoku.structure.SudokuBoard;
-
 import java.util.logging.Logger;
 
 import static com.sudoku.structure.SudokuBoard.MAX_VALUE;
@@ -71,7 +70,6 @@ public class SudokuSolver {
         && checkElement(board, coordinates)) {
             return true;
         }
-        //logger.info(TextFactor.cannotPutNumberIntoBoard(coordinates));
         return false;
     }
 

@@ -10,7 +10,7 @@ import static com.sudoku.structure.SudokuBoard.MAX_VALUE;
 
 @Getter
 @AllArgsConstructor
-public class SudokuElement extends Prototype {
+public class SudokuElement extends Prototype<SudokuElement> {
     private int number;
     private List<Integer> possibleNumbers;
 
@@ -30,7 +30,7 @@ public class SudokuElement extends Prototype {
     }
 
     public SudokuElement deepClone() throws CloneNotSupportedException {
-        SudokuElement cloneSudokuElement = (SudokuElement) super.clone();
+        SudokuElement cloneSudokuElement = super.clone();
 
         if (this.number == 0) {
             cloneSudokuElement.setNumber(0);

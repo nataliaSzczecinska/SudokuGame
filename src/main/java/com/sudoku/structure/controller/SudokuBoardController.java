@@ -77,7 +77,8 @@ public class SudokuBoardController {
     }
 
     public boolean putOnlyPossibleNumber(SudokuBoard board) {
-        boolean anyChanges, anyChangesInBoard = false;
+        boolean anyChanges;
+        boolean anyChangesInBoard = false;
 
         do {
             anyChanges = false;
@@ -121,7 +122,8 @@ public class SudokuBoardController {
     }
 
     public boolean putOnlyPossibleElement(SudokuBoard board) {
-        boolean anyChanges, anyChangesInBoard = false;
+        boolean anyChanges;
+        boolean anyChangesInBoard = false;
         do {
             anyChanges = false;
             putOnlyPossibleNumber(board);
@@ -138,15 +140,7 @@ public class SudokuBoardController {
                                 putIntoBoard(board, temp);
                                 anyChanges = true;
                                 anyChangesInBoard = true;
-                            } /*else if (checkNumberInPossibilitiesInColumn(board, j + 1, value)) {
-                                putIntoBoard(board, temp);
-                                anyChanges = true;
-                                anyChangesInBoard = true;
-                            } else if (checkNumberInPossibilitiesInBox(board, j + 1, i + 1, value)) {
-                                putIntoBoard(board, temp);
-                                anyChanges = true;
-                                anyChangesInBoard = true;
-                            }*/
+                            }
                         }
                     }
                 }

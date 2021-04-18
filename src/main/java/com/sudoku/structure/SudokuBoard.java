@@ -5,7 +5,7 @@ import com.sudoku.structure.prototype.Prototype;
 import java.util.logging.Logger;
 import java.util.Arrays;
 
-public class SudokuBoard extends Prototype {
+public class SudokuBoard extends Prototype<SudokuBoard> {
     public static final int MAX_VALUE = 9;
     private final Logger logger = Logger.getLogger(getClass().getName());
     private SudokuElement[][] board;
@@ -26,7 +26,7 @@ public class SudokuBoard extends Prototype {
     }
 
     public SudokuBoard deepClone() throws CloneNotSupportedException {
-        SudokuBoard cloneBoard = (SudokuBoard) super.clone();
+        SudokuBoard cloneBoard = super.clone();
         cloneBoard.setBoard(createEmptyBoard());
 
         for (int i = 0 ; i < MAX_VALUE ; i++) {
@@ -68,7 +68,7 @@ public class SudokuBoard extends Prototype {
         if (board == null) {
             throw new NullPointerException(TextFactor.elementDoNotExist("Sudoku Board"));
         } else {
-            String text = new String();
+            String text = "";
             for (int i = 0; i < MAX_VALUE; i++) {
                 if (i % 3 == 0 && 0 != i) {
                     text += "|=====|=====|=====||=====|=====|=====||=====|=====|=====|\n";
