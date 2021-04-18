@@ -224,4 +224,15 @@ public class SudokuBoardController {
         }
         return false;
     }
+
+    public boolean isThereEmptyElement(SudokuBoard board) {
+        for (int i = 0 ; i < MAX_VALUE ; i++) {
+            for (int j = 0 ; j < MAX_VALUE ; j++) {
+                if (0 == board.getBoardElement(j + 1, i + 1).getNumber()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }
