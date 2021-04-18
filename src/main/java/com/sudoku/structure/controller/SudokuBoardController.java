@@ -1,6 +1,5 @@
 package com.sudoku.structure.controller;
 
-import com.sudoku.game.SudokuSolver;
 import com.sudoku.io.TextFactor;
 import com.sudoku.structure.Coordinates;
 import com.sudoku.structure.SudokuBoard;
@@ -12,7 +11,6 @@ import java.util.*;
 
 public class SudokuBoardController {
     private final Logger logger = Logger.getLogger(getClass().getName());
-    private final SudokuSolver solver = new SudokuSolver();
     private Coordinates temp = new Coordinates();
 
     public List<Coordinates> getCoordinateList(String text) {
@@ -62,20 +60,6 @@ public class SudokuBoardController {
         return list;
     }
 
-    public void putManyIntoBoard (SudokuBoard board, List<Coordinates> coordinatesList) {
-        for (Coordinates element : coordinatesList) {
-            putIntoBoard(board, element);
-        }
-    }
-
-    public void putIntoBoard(SudokuBoard board, Coordinates coordinates) {
-        if (solver.isPossibleToPut(board, coordinates)) {
-            board.setBoardElement(coordinates);
-        } else {
-            logger.info(TextFactor.cannotPutNumberIntoBoard(coordinates));
-        }
-    }
-
     public boolean putOnlyPossibleNumber(SudokuBoard board) {
         boolean anyChanges;
         boolean anyChangesInBoard = false;
@@ -91,7 +75,7 @@ public class SudokuBoardController {
                                 board.getBoardElement(j + 1, i + 1)
                                         .getPossibleNumbers()
                                         .get(0));
-                        putIntoBoard(board, coordinates);
+                        isPossibleToPut(board, coordinates);
                         anyChanges = true;
                         anyChangesInBoard = true;
                     }
@@ -106,12 +90,13 @@ public class SudokuBoardController {
             for (int j = 0 ; j < MAX_VALUE ; j++) {
                 if (0 == board.getBoardElement(j + 1, i + 1).getNumber()) {
                     for (int n = 0 ;
-                         n < board.getBoardElement(j + 1, i + 1).getPossibleNumbers().size() ;
+                         null != board.getBoardElement(j + 1, i + 1).getPossibleNumbers()
+                         && n < board.getBoardElement(j + 1, i + 1).getPossibleNumbers().size() ;
                          n++) {
                         int value = board.getBoardElement(j + 1, i + 1)
                                 .getPossibleNumbers().get(n);
                         Coordinates coordinates = new Coordinates(j + 1, i + 1, value);
-                        if (!solver.isPossibleToPut(board, coordinates)) {
+                        if (!isPossibleToPut(board, coordinates)) {
                             board.getBoardElement(j + 1, i + 1).removeNumberFromPossibleNumbers(value);
                             n--;
                         }
@@ -137,7 +122,7 @@ public class SudokuBoardController {
                             if (checkNumberInPossibilitiesInRow(board, i + 1, value)
                             || checkNumberInPossibilitiesInColumn(board, j + 1, value)
                             || checkNumberInPossibilitiesInBox(board, j + 1, i + 1, value)) {
-                                putIntoBoard(board, temp);
+                                isPossibleToPut(board, temp);
                                 anyChanges = true;
                                 anyChangesInBoard = true;
                             }
@@ -223,5 +208,76 @@ public class SudokuBoardController {
             return true;
         }
         return false;
+    }
+
+    private boolean checkRows(SudokuBoard board, Coordinates coordinates) {
+        for (int i = 0 ; i < MAX_VALUE ; i++) {
+            if (coordinates.getNumber() == (board
+                    .getBoardElement(i + 1, coordinates.getRow())
+                    .getNumber())
+                    && (i != coordinates.getColumn() - 1)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean checkColumns(SudokuBoard board, Coordinates coordinates) {
+        for (int i = 0 ; i < MAX_VALUE ; i++) {
+            if(coordinates.getNumber() == (board
+                    .getBoardElement(coordinates.getColumn(), i + 1)
+                    .getNumber())
+                    && i != (coordinates.getRow() - 1)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean checkBoxes(SudokuBoard board, Coordinates coordinates) {
+        int row = (coordinates.getRow() - 1) / 3;
+        int col = (coordinates.getColumn() - 1) / 3;
+        row *= 3;
+        col *= 3;
+
+        for (int i = row ; i < row + 3 ; i++) {
+            for (int j = col ; j < col + 3 ; j++) {
+                if (i == (coordinates.getRow() - 1) && j == (coordinates.getColumn() - 1)) {
+                    break;
+                } else {
+                    if(coordinates.getNumber() == (board
+                            .getBoardElement(j + 1, i + 1)
+                            .getNumber())) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    private boolean checkElement(SudokuBoard board, Coordinates coordinates) {
+        if (0 == board.getBoardElement(coordinates.getColumn(), coordinates.getRow()).getNumber()) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isPossibleToPut(SudokuBoard board, Coordinates coordinates) {
+        if (checkRows(board, coordinates)
+                && checkColumns(board, coordinates)
+                && checkBoxes(board, coordinates)
+                && checkElement(board, coordinates)) {
+            board.setBoardElement(coordinates);
+            return true;
+        }
+        logger.info(TextFactor.cannotPutNumberIntoBoard(coordinates));
+        return false;
+    }
+
+    public void putManyIntoBoard (SudokuBoard board, List<Coordinates> coordinatesList) {
+        for (Coordinates element : coordinatesList) {
+            isPossibleToPut(board, element);
+        }
     }
 }

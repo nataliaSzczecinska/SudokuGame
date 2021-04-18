@@ -49,11 +49,11 @@ public class SudokuBoardControllerTestSuite {
         Coordinates coordinates4 = new Coordinates(1, 2, 2);
         Coordinates coordinates5 = new Coordinates(2, 1, 2);
 
-        boardController.putIntoBoard(board, coordinates1);
-        boardController.putIntoBoard(board, coordinates2);
-        boardController.putIntoBoard(board, coordinates3);
-        boardController.putIntoBoard(board, coordinates4);
-        boardController.putIntoBoard(board, coordinates5);
+        boolean check1 = boardController.isPossibleToPut(board, coordinates1);
+        boolean check2 = boardController.isPossibleToPut(board, coordinates2);
+        boolean check3 = boardController.isPossibleToPut(board, coordinates3);
+        boolean check4 = boardController.isPossibleToPut(board, coordinates4);
+        boolean check5 = boardController.isPossibleToPut(board, coordinates5);
 
         //Then
         assertEquals(0, board.getBoardElement(9, 2).getNumber());
@@ -61,6 +61,11 @@ public class SudokuBoardControllerTestSuite {
         assertEquals(0, board.getBoardElement(1, 1).getNumber());
         assertEquals(4, board.getBoardElement(1, 2).getNumber());
         assertEquals(2, board.getBoardElement(2, 1).getNumber());
+        assertFalse(check1);
+        assertFalse(check2);
+        assertFalse(check3);
+        assertFalse(check4);
+        assertTrue(check5);
     }
 
     @Test
