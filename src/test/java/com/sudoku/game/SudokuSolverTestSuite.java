@@ -191,7 +191,16 @@ public class SudokuSolverTestSuite {
         board.setBoardElement(6, 9, 7);
         board.setBoardElement(8, 9, 6);
 
+        //When
+        SudokuBoard solvedBoard = solver.solve(board);
+        boolean isBoardSolved = solver.isSolved(board);
+        boolean isSolvedBoardSolve = solver.isSolved(solvedBoard);
+
+        //Then
         logger.info("BOARD\n" + board);
+        logger.info("SOLVED BOARD\n" + solvedBoard);
+        assertFalse(isBoardSolved);
+        assertTrue(isSolvedBoardSolve);
     }
 
     @Test

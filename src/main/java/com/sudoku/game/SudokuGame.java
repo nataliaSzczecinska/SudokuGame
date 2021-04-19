@@ -13,6 +13,7 @@ public class SudokuGame {
     private Input input = new Input();
     private SudokuBoardController controller = new SudokuBoardController();
     private SudokuBoard board = new SudokuBoard();
+    private SudokuBoard solvedBoard = new SudokuBoard();
 
     public void play() {
         System.out.println(TextFactor.start());
@@ -38,9 +39,12 @@ public class SudokuGame {
                     if (!controller.isSudokuBoardEmptyOrAlmostEmpty(board, 10)) {
                         System.out.println(TextFactor.notEnoughBoardElements());
                     } else {
-                        //solve the board
-                        System.out.println(TextFactor.gameIsSolve(board));
-                        System.out.println(TextFactor.playerOption());
+                        solvedBoard = solver.solve(board);
+                        if (solver.isSolved(solvedBoard)) {
+                            System.out.println(TextFactor.gameIsSolve(solvedBoard));
+                        } else {
+                            System.out.println(TextFactor.cannotBeSolve());
+                        }
                     }
                     break;
                 } default: {

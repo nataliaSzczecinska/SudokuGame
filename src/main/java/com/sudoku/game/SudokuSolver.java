@@ -70,7 +70,7 @@ public class SudokuSolver {
         SudokuBoard solveBoard = null;
         try {
             solveBoard = board.deepClone();
-
+            solveBoard = findSolution(solveBoard);
         } catch (CloneNotSupportedException exception) {
             logger.warning(TextFactor.cloneException());
         }
