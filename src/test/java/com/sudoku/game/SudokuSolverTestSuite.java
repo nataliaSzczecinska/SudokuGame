@@ -2,6 +2,7 @@ package com.sudoku.game;
 
 import com.sudoku.structure.Coordinates;
 import com.sudoku.structure.SudokuBoard;
+import com.sudoku.structure.controller.SudokuBoardController;
 import org.junit.jupiter.api.Test;
 import java.util.*;
 import java.util.logging.Logger;
@@ -11,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class SudokuSolverTestSuite {
     private final Logger logger = Logger.getLogger(getClass().getName());
     private SudokuSolver solver = new SudokuSolver();
+    private SudokuBoardController controller = new SudokuBoardController();
     private SudokuBoard board = new SudokuBoard();
 
     @Test
@@ -112,8 +114,6 @@ public class SudokuSolverTestSuite {
     @Test
     public void testGuessNumber() {
         //Given
-        board.setBoardElement(2, 1, 2);
-        board.setBoardElement(3, 1, 6);
         board.setBoardElement(4, 1, 5);
         board.setBoardElement(5, 1, 7);
         board.setBoardElement(6, 1, 1);
@@ -125,12 +125,72 @@ public class SudokuSolverTestSuite {
         board.setBoardElement(3, 2, 7);
         board.setBoardElement(4, 2, 2);
         board.setBoardElement(5, 2, 9);
+        board.setBoardElement(6, 2, 3);
+        board.setBoardElement(7, 2, 1);
+        board.setBoardElement(8, 2, 4);
+        board.setBoardElement(9, 2, 6);
+        board.setBoardElement(1, 3, 1);
+        board.setBoardElement(2, 3, 3);
+        board.setBoardElement(3, 3, 9);
+        board.setBoardElement(7, 8, 9);
+        board.setBoardElement(8, 8, 3);
+        board.setBoardElement(9, 8, 7);
+        board.setBoardElement(1, 9, 3);
+        board.setBoardElement(2, 9, 1);
+        board.setBoardElement(3, 9, 8);
+        board.setBoardElement(4, 9, 9);
+        board.setBoardElement(5, 9, 5);
+        board.setBoardElement(6, 9, 7);
+        board.setBoardElement(7, 9, 4);
 
         //When
-        logger.info("ACTUAL BOARD\n" + board);
-        SudokuBoard boardAfterGuess = solver.guessNumber(board);
-        logger.info("ACTUAL BOARD\n" + board);
-        logger.info("AFTER GUESS BOARD\n" + boardAfterGuess);
+        logger.info("BOARD\n" + board);
+        controller.putOnlyPossibleElement(board);
+        logger.info("BOARD AFTER EARLY CORRECTION\n" + board);
+        solver.guessNumber(board);
+        logger.info("BOARD AFTER ONE GUESS\n" + board);
+        solver.guessNumber(board);
+        logger.info("BOARD AFTER TWO GUESSES\n" + board);
 
+        //Then
+        assertEquals(2, board.getBoardElement(1, 1).getNumber());
+        assertEquals(4, board.getBoardElement(4, 3).getNumber());
+    }
+
+    @Test
+    public void testSolve() {
+        //Given
+        board.setBoardElement(2, 1, 2);
+        board.setBoardElement(4, 1, 5);
+        board.setBoardElement(6, 1, 1);
+        board.setBoardElement(8, 1, 9);
+        board.setBoardElement(1, 2, 8);
+        board.setBoardElement(4, 2, 2);
+        board.setBoardElement(6, 2, 3);
+        board.setBoardElement(9, 2, 6);
+        board.setBoardElement(2, 3, 3);
+        board.setBoardElement(5, 3, 6);
+        board.setBoardElement(8, 3, 7);
+        board.setBoardElement(3, 4, 1);
+        board.setBoardElement(7, 4, 6);
+        board.setBoardElement(1, 5, 5);
+        board.setBoardElement(2, 5, 4);
+        board.setBoardElement(8, 5, 1);
+        board.setBoardElement(9, 5, 9);
+        board.setBoardElement(3, 6, 2);
+        board.setBoardElement(7, 6, 7);
+        board.setBoardElement(2, 7, 9);
+        board.setBoardElement(5, 7, 3);
+        board.setBoardElement(8, 7, 8);
+        board.setBoardElement(1, 8, 2);
+        board.setBoardElement(4, 8, 8);
+        board.setBoardElement(6, 8, 4);
+        board.setBoardElement(9, 8, 7);
+        board.setBoardElement(2, 9, 1);
+        board.setBoardElement(4, 9, 9);
+        board.setBoardElement(6, 9, 7);
+        board.setBoardElement(8, 9, 6);
+
+        logger.info("BOARD\n" + board);
     }
 }

@@ -31,18 +31,28 @@ public class SudokuSolver {
         return true;
     }
 
-    public SudokuBoard guessNumber(SudokuBoard board) {
-        SudokuBoard clone = null;
+    private boolean isPossibleToSolved(SudokuBoard board) {
+        for (int i = 0 ; i < MAX_VALUE ; i++) {
+            for (int j = 0 ; j < MAX_VALUE ; j++) {
+                if (0 == board.getBoardElement(j + 1, i + 1).getNumber()
+                && board.getBoardElement(j + 1, i + 1).getPossibleNumbers().isEmpty()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
+    public SudokuBoard guessNumber(SudokuBoard board) {
         try {
-            clone = board.deepClone();
+            SudokuBoard clone = board.deepClone();
             if (!isSolved(board)) {
                 for (int i = 0 ; i < MAX_VALUE ; i++) {
                     for (int j = 0 ; j < MAX_VALUE ; j++) {
                         if (0 == board.getBoardElement(j + 1, i + 1).getNumber()) {
                             int number = board.getBoardElement(j + 1, i + 1).getPossibleNumbers().get(0);
                             Coordinates coordinates = new Coordinates(j + 1, i + 1, number);
-                            if (controller.isPossibleToPut(board, coordinates)) {
+                            if (controller.putNumberIntoBoard(board, coordinates)) {
                                 backtrackList.addElement(new Backtrack(clone, coordinates));
                                 return board;
                             }
@@ -52,6 +62,28 @@ public class SudokuSolver {
             }
         } catch (CloneNotSupportedException exception) {
             logger.warning(TextFactor.cloneException());
+        }
+        return board;
+    }
+
+    public SudokuBoard solve(SudokuBoard board) {
+        SudokuBoard solveBoard = null;
+        try {
+            solveBoard = board.deepClone();
+            while (!isSolved(solveBoard) && isPossibleToSolved(solveBoard)) {
+                solveBoard = findSolution(solveBoard);
+            }
+        } catch (CloneNotSupportedException exception) {
+            logger.warning(TextFactor.cloneException());
+        }
+        return solveBoard;
+    }
+
+    public SudokuBoard findSolution(SudokuBoard board) {
+        int iteration = 0;
+        while (controller.putOnlyPossibleElement(board)) {
+            logger.info("Number of iteration: " + iteration);
+            iteration++;
         }
         return board;
     }

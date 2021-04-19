@@ -75,7 +75,7 @@ public class SudokuBoardController {
                                 board.getBoardElement(j + 1, i + 1)
                                         .getPossibleNumbers()
                                         .get(0));
-                        isPossibleToPut(board, coordinates);
+                        putNumberIntoBoard(board, coordinates);
                         anyChanges = true;
                         anyChangesInBoard = true;
                     }
@@ -122,7 +122,7 @@ public class SudokuBoardController {
                             if (checkNumberInPossibilitiesInRow(board, i + 1, value)
                             || checkNumberInPossibilitiesInColumn(board, j + 1, value)
                             || checkNumberInPossibilitiesInBox(board, j + 1, i + 1, value)) {
-                                isPossibleToPut(board, temp);
+                                putNumberIntoBoard(board, temp);
                                 anyChanges = true;
                                 anyChangesInBoard = true;
                             }
@@ -268,16 +268,23 @@ public class SudokuBoardController {
                 && checkColumns(board, coordinates)
                 && checkBoxes(board, coordinates)
                 && checkElement(board, coordinates)) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean putNumberIntoBoard(SudokuBoard board, Coordinates coordinates) {
+        if (isPossibleToPut(board, coordinates)) {
             board.setBoardElement(coordinates);
             return true;
         }
-        logger.info(TextFactor.cannotPutNumberIntoBoard(coordinates));
+        //logger.info(TextFactor.cannotPutNumberIntoBoard(coordinates));
         return false;
     }
 
     public void putManyIntoBoard (SudokuBoard board, List<Coordinates> coordinatesList) {
         for (Coordinates element : coordinatesList) {
-            isPossibleToPut(board, element);
+            putNumberIntoBoard(board, element);
         }
     }
 }

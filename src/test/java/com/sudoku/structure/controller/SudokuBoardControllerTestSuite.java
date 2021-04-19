@@ -11,7 +11,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class SudokuBoardControllerTestSuite {
     private final Logger logger = Logger.getLogger(getClass().getName());
-    private final SudokuSolver solver = new SudokuSolver();
     private SudokuBoardController boardController = new SudokuBoardController();
     private SudokuBoard board = new SudokuBoard();
 
@@ -56,11 +55,6 @@ public class SudokuBoardControllerTestSuite {
         boolean check5 = boardController.isPossibleToPut(board, coordinates5);
 
         //Then
-        assertEquals(0, board.getBoardElement(9, 2).getNumber());
-        assertEquals(0, board.getBoardElement(3, 9).getNumber());
-        assertEquals(0, board.getBoardElement(1, 1).getNumber());
-        assertEquals(4, board.getBoardElement(1, 2).getNumber());
-        assertEquals(2, board.getBoardElement(2, 1).getNumber());
         assertFalse(check1);
         assertFalse(check2);
         assertFalse(check3);
