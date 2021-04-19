@@ -12,7 +12,7 @@ import java.util.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BacktrackList {
-    private List<Backtrack> backtracks= new ArrayList<>();
+    private List<Backtrack> backtracks = new ArrayList<>();
 
     public void addElement(Backtrack backtrack) {
         backtracks.add(backtrack);

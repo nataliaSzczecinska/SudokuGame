@@ -70,9 +70,7 @@ public class SudokuSolver {
         SudokuBoard solveBoard = null;
         try {
             solveBoard = board.deepClone();
-            while (!isSolved(solveBoard) && isPossibleToSolved(solveBoard)) {
-                solveBoard = findSolution(solveBoard);
-            }
+
         } catch (CloneNotSupportedException exception) {
             logger.warning(TextFactor.cloneException());
         }
@@ -80,10 +78,24 @@ public class SudokuSolver {
     }
 
     public SudokuBoard findSolution(SudokuBoard board) {
-        int iteration = 0;
-        while (controller.putOnlyPossibleElement(board)) {
-            logger.info("Number of iteration: " + iteration);
-            iteration++;
+        controller.putOnlyPossibleElement(board);
+        Coordinates coordinates;
+
+        if (!isSolved(board)) {
+            if (isPossibleToSolved(board)) {
+                board = guessNumber(board);
+            } else {
+                if (backtrackList.getBacktracks().isEmpty()) {
+                    logger.info(TextFactor.cannotBeSolve());
+                    return board;
+                }
+                board = backtrackList.getLastElement().getBoard();
+                coordinates = backtrackList.getLastElement().getCoordinates();
+                backtrackList.removeLastElement();
+                board.getBoardElement(coordinates.getColumn(), coordinates.getRow())
+                        .removeNumberFromPossibleNumbers(coordinates.getNumber());
+            }
+            board = findSolution(board);
         }
         return board;
     }
