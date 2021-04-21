@@ -18,6 +18,7 @@ public class SudokuBoardController {
         Coordinates coordinates = null;
 
         if (!((text.length() % 6 == 0) || ((text.length() + 1) % 6 == 0))) {
+            logger.warning(TextFactor.mistakeChoice());
             return list;
         }
         for (int i = 0 ; i < text.length() ; i++) {
@@ -278,7 +279,6 @@ public class SudokuBoardController {
             board.setBoardElement(coordinates);
             return true;
         }
-        //logger.info(TextFactor.cannotPutNumberIntoBoard(coordinates));
         return false;
     }
 

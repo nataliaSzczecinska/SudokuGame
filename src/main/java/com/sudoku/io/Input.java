@@ -26,6 +26,7 @@ public class Input {
                 case 'p': {
                     return true;
                 } default: {
+                    logger.warning(TextFactor.mistakeChoice());
                     return false;
                 }
             }
@@ -33,10 +34,12 @@ public class Input {
             for (int i = 0 ; !isSolve && i < text.length() ; i++) {
                 if(i % 2 == 0) {
                     if (!(47 <= text.charAt(i) && 57 >= text.charAt(i))) {
+                        logger.warning(TextFactor.mistakeChoice());
                         return false;
                     }
                 } else {
                     if (44 != text.charAt(i)) {
+                        logger.warning(TextFactor.mistakeChoice());
                         return false;
                     }
                 }

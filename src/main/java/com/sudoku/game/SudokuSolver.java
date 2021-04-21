@@ -71,6 +71,9 @@ public class SudokuSolver {
         try {
             solveBoard = board.deepClone();
             solveBoard = findSolution(solveBoard);
+            if (!isSolved(solveBoard)) {
+                return board;
+            }
         } catch (CloneNotSupportedException exception) {
             logger.warning(TextFactor.cloneException());
         }

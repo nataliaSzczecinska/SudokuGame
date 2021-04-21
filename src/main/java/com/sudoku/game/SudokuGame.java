@@ -21,7 +21,7 @@ public class SudokuGame {
         do {
             do {
                 option = input.readInput();
-            }while (!input.checkCorrectLoadData(option, solver.isSolved(board)));
+            }while (!input.checkCorrectLoadData(option, solver.isSolved(solvedBoard)));
         } while (!analiseOption(option));
     }
 

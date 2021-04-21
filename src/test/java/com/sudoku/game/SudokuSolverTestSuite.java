@@ -246,4 +246,52 @@ public class SudokuSolverTestSuite {
         //Then
         assertTrue(isSolved);
     }
+
+    @Test
+    public void testSolveBoardWhichCannotBeSolved() {
+        //Given
+        board.setBoardElement(2, 1, 2);
+        board.setBoardElement(4, 1, 5);
+        board.setBoardElement(6, 1, 1);
+        board.setBoardElement(8, 1, 9);
+        board.setBoardElement(1, 2, 8);
+        board.setBoardElement(4, 2, 2);
+        board.setBoardElement(6, 2, 3);
+        board.setBoardElement(9, 2, 6);
+        board.setBoardElement(2, 3, 3);
+        board.setBoardElement(5, 3, 6);
+        board.setBoardElement(8, 3, 7);
+        board.setBoardElement(3, 4, 1);
+        board.setBoardElement(7, 4, 6);
+        board.setBoardElement(1, 5, 5);
+        board.setBoardElement(2, 5, 4);
+        board.setBoardElement(8, 5, 1);
+        board.setBoardElement(9, 5, 9);
+        board.setBoardElement(3, 6, 2);
+        board.setBoardElement(7, 6, 7);
+        board.setBoardElement(2, 7, 9);
+        board.setBoardElement(5, 7, 3);
+        board.setBoardElement(8, 7, 8);
+        board.setBoardElement(1, 8, 2);
+        board.setBoardElement(4, 8, 8);
+        board.setBoardElement(6, 8, 4);
+        board.setBoardElement(9, 8, 7);
+        board.setBoardElement(2, 9, 1);
+        board.setBoardElement(4, 9, 9);
+        board.setBoardElement(6, 9, 7);
+        board.setBoardElement(8, 9, 6);
+        board.setBoardElement(4, 7, 1);
+
+
+        //When
+        SudokuBoard solvedBoard = solver.solve(board);
+        boolean isBoardSolved = solver.isSolved(board);
+        boolean isSolvedBoardSolve = solver.isSolved(solvedBoard);
+
+        //Then
+        logger.info("BOARD\n" + board);
+        logger.info("SOLVED BOARD\n" + solvedBoard);
+        assertFalse(isBoardSolved);
+        assertFalse(isSolvedBoardSolve);
+    }
 }
