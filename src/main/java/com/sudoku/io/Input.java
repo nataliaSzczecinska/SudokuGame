@@ -13,6 +13,9 @@ public class Input {
     }
 
     public boolean checkCorrectLoadData(String text, boolean isSolve) {
+        if (text.isBlank()) {
+            return false;
+        }
         if (1 == text.length()) {
             switch (text.charAt(0)) {
                 case 's': {
