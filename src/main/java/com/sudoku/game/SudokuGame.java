@@ -33,6 +33,7 @@ public class SudokuGame {
                     return true;
                 } case 'p': {
                     board = new SudokuBoard();
+                    solvedBoard = new SudokuBoard();
                     System.out.println(TextFactor.start());
                     break;
                 } case 's': {

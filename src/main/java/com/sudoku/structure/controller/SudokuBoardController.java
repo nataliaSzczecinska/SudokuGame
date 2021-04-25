@@ -3,6 +3,7 @@ package com.sudoku.structure.controller;
 import com.sudoku.io.TextFactor;
 import com.sudoku.structure.Coordinates;
 import com.sudoku.structure.SudokuBoard;
+import com.sudoku.structure.SudokuElement;
 
 import static com.sudoku.structure.SudokuBoard.MAX_VALUE;
 import static java.util.Optional.ofNullable;
@@ -70,7 +71,7 @@ public class SudokuBoardController {
             correctPossibleNumberList(board);
             for (int i = 0 ; i < MAX_VALUE ; i++) {
                 for (int j = 0; j < MAX_VALUE; j++) {
-                    if (0 == board.getBoardElement(j + 1, i + 1).getNumber()
+                    if (numbersAtPossibleNumberList(board.getBoardElement(j + 1, i + 1))
                             && 1 == board.getBoardElement(j + 1, i + 1).getPossibleNumbers().size()) {
                         Coordinates coordinates = new Coordinates(j + 1, i + 1,
                                 board.getBoardElement(j + 1, i + 1)
@@ -89,7 +90,7 @@ public class SudokuBoardController {
     private void correctPossibleNumberList(SudokuBoard board) {
         for (int i = 0 ; i < MAX_VALUE ; i++) {
             for (int j = 0 ; j < MAX_VALUE ; j++) {
-                if (0 == board.getBoardElement(j + 1, i + 1).getNumber()) {
+                if (numbersAtPossibleNumberList(board.getBoardElement(j + 1, i + 1))) {
                     for (int n = 0 ;
                          null != board.getBoardElement(j + 1, i + 1).getPossibleNumbers()
                          && n < board.getBoardElement(j + 1, i + 1).getPossibleNumbers().size() ;
@@ -115,9 +116,10 @@ public class SudokuBoardController {
             putOnlyPossibleNumber(board);
             for (int i = 0 ; i < MAX_VALUE && !anyChanges; i++) {
                 for (int j = 0 ; j < MAX_VALUE && !anyChanges; j++) {
-                    if (0 == board.getBoardElement(j + 1, i + 1).getNumber()) {
-                        for (int n = 0 ; !anyChanges && n < board.getBoardElement(j + 1, i + 1)
-                                .getPossibleNumbers().size() ; n++) {
+                    if (numbersAtPossibleNumberList(board.getBoardElement(j + 1, i + 1))) {
+                        for (int n = 0 ; !anyChanges
+                                && n < board.getBoardElement(j + 1, i + 1)
+                                            .getPossibleNumbers().size() ; n++) {
                             int value = board.getBoardElement(j + 1, i + 1)
                                     .getPossibleNumbers().get(n);
                             if (checkNumberInPossibilitiesInRow(board, i + 1, value)
@@ -141,7 +143,7 @@ public class SudokuBoardController {
         int quantity = 0;
 
         for (int i = 0 ; i < MAX_VALUE ; i++) {
-            if (0 == board.getBoardElement(i + 1, row).getNumber()
+            if (numbersAtPossibleNumberList(board.getBoardElement(i + 1, row))
                     && board.getBoardElement(i + 1, row).isNumberExist(number)) {
                 temp.setCoordinates(i + 1, row, number);
                 quantity++;
@@ -159,7 +161,7 @@ public class SudokuBoardController {
         int quantity = 0;
 
         for (int i = 0 ; i < MAX_VALUE ; i++) {
-            if (0 == board.getBoardElement(column, i + 1).getNumber()
+            if (numbersAtPossibleNumberList(board.getBoardElement(column, i + 1))
                     && board.getBoardElement(column, i + 1).isNumberExist(number)) {
                 temp.setCoordinates(column, i + 1, number);
                 quantity++;
@@ -183,7 +185,7 @@ public class SudokuBoardController {
 
         for (int i = r ; i < r + 3 ; i++) {
             for (int j = c ; j < c + 3 ; j++) {
-                if(0 == board.getBoardElement(j + 1, i + 1).getNumber()
+                if(numbersAtPossibleNumberList(board.getBoardElement(j + 1, i + 1))
                         && board.getBoardElement(j + 1, i + 1).isNumberExist(number)) {
                     temp.setCoordinates(j + 1, i + 1, number);
                     quantity++;
@@ -258,7 +260,7 @@ public class SudokuBoardController {
     }
 
     private boolean checkElement(SudokuBoard board, Coordinates coordinates) {
-        if (0 == board.getBoardElement(coordinates.getColumn(), coordinates.getRow()).getNumber()) {
+        if (numbersAtPossibleNumberList(board.getBoardElement(coordinates.getColumn(), coordinates.getRow()))) {
             return true;
         }
         return false;
@@ -286,5 +288,16 @@ public class SudokuBoardController {
         for (Coordinates element : coordinatesList) {
             putNumberIntoBoard(board, element);
         }
+    }
+
+    private boolean numbersAtPossibleNumberList(SudokuElement element) {
+        if (0 == element.getNumber()) {
+            if (element.getPossibleNumbers().isEmpty()
+            || null == element.getPossibleNumbers()) {
+                return false;
+            }
+            return true;
+        }
+        return false;
     }
 }

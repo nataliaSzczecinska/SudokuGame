@@ -35,7 +35,8 @@ public class SudokuSolver {
         for (int i = 0 ; i < MAX_VALUE ; i++) {
             for (int j = 0 ; j < MAX_VALUE ; j++) {
                 if (0 == board.getBoardElement(j + 1, i + 1).getNumber()
-                && board.getBoardElement(j + 1, i + 1).getPossibleNumbers().isEmpty()) {
+                && (board.getBoardElement(j + 1, i + 1).getPossibleNumbers().isEmpty()
+                || null == board.getBoardElement(j + 1, i + 1).getPossibleNumbers())) {
                     return false;
                 }
             }
@@ -46,7 +47,7 @@ public class SudokuSolver {
     public SudokuBoard guessNumber(SudokuBoard board) {
         try {
             SudokuBoard clone = board.deepClone();
-            if (!isSolved(board)) {
+            if (!isSolved(board) && isPossibleToSolved(board)) {
                 for (int i = 0 ; i < MAX_VALUE ; i++) {
                     for (int j = 0 ; j < MAX_VALUE ; j++) {
                         if (0 == board.getBoardElement(j + 1, i + 1).getNumber()) {
@@ -70,7 +71,13 @@ public class SudokuSolver {
         SudokuBoard solveBoard = null;
         try {
             solveBoard = board.deepClone();
-            solveBoard = findSolution(solveBoard);
+            controller.putOnlyPossibleElement(solveBoard);
+            if (isPossibleToSolved(solveBoard)) {
+                solveBoard = findSolution(solveBoard);
+            } else {
+                logger.warning(TextFactor.cannotBeSolve());
+                return board;
+            }
             if (!isSolved(solveBoard)) {
                 return board;
             }
@@ -84,12 +91,15 @@ public class SudokuSolver {
         controller.putOnlyPossibleElement(board);
         Coordinates coordinates;
 
+        if (!isPossibleToSolved(board)) {
+            return board;
+        }
         if (!isSolved(board)) {
             if (isPossibleToSolved(board)) {
                 board = guessNumber(board);
             } else {
-                if (backtrackList.getBacktracks().isEmpty()) {
-                    logger.info(TextFactor.cannotBeSolve());
+                if (backtrackList.getBacktracks().isEmpty()
+                || null == backtrackList.getBacktracks()) {
                     return board;
                 }
                 board = backtrackList.getLastElement().getBoard();
